@@ -1,0 +1,191 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "L76148/moonchess"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn start_fen() -> String
+
+// Errors
+pub(all) suberror FenError {
+  Empty
+  FieldCount(Int)
+  BoardRankCount(Int)
+  BoardRankWidth(Int, Int)
+  InvalidPiece(Char)
+  InvalidSideToMove(String)
+  InvalidCastling(String)
+  InvalidEnPassant(String)
+  InvalidHalfmoveClock(String)
+  InvalidFullmoveNumber(String)
+  MissingKing(Color)
+  TooManyKings(Color)
+} derive(@debug.Debug)
+pub fn FenError::message(Self) -> String
+pub fn FenError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub(all) struct Bitboard(UInt64) derive(Eq, @debug.Debug)
+pub fn Bitboard::contains(Self, Square) -> Bool
+pub fn Bitboard::count(Self) -> Int
+pub fn Bitboard::difference(Self, Self) -> Self
+pub fn Bitboard::empty() -> Self
+pub fn Bitboard::equal(Self, Self) -> Bool
+pub fn Bitboard::file_mask(Int) -> Self
+pub fn Bitboard::first(Self) -> Square?
+pub fn Bitboard::from_u64(UInt64) -> Self
+pub fn Bitboard::full() -> Self
+pub fn Bitboard::intersect(Self, Self) -> Self
+pub fn Bitboard::is_empty(Self) -> Bool
+pub fn Bitboard::not_equal(Self, Self) -> Bool
+pub fn Bitboard::output(Self, &Logger) -> Unit
+pub fn Bitboard::rank_mask(Int) -> Self
+pub fn Bitboard::remove(Self, Square) -> Self
+pub fn Bitboard::set(Self, Square) -> Self
+pub fn Bitboard::single(Square) -> Self
+pub fn Bitboard::squares(Self) -> Array[Square]
+pub fn Bitboard::to_ascii(Self) -> String
+pub fn Bitboard::to_repr(Self) -> @debug.Repr
+pub fn Bitboard::to_string(Self) -> String
+pub fn Bitboard::to_u64(Self) -> UInt64
+pub fn Bitboard::union(Self, Self) -> Self
+pub impl Show for Bitboard
+
+pub(all) struct CastlingRights {
+  white_kingside : Bool
+  white_queenside : Bool
+  black_kingside : Bool
+  black_queenside : Bool
+} derive(Eq, @debug.Debug)
+pub fn CastlingRights::all() -> Self
+pub fn CastlingRights::equal(Self, Self) -> Bool
+pub fn CastlingRights::has_kingside(Self, Color) -> Bool
+pub fn CastlingRights::has_queenside(Self, Color) -> Bool
+pub fn CastlingRights::index(Self) -> Int
+pub fn CastlingRights::is_empty(Self) -> Bool
+pub fn CastlingRights::none() -> Self
+pub fn CastlingRights::not_equal(Self, Self) -> Bool
+pub fn CastlingRights::output(Self, &Logger) -> Unit
+pub fn CastlingRights::to_fen(Self) -> String
+pub fn CastlingRights::to_repr(Self) -> @debug.Repr
+pub fn CastlingRights::to_string(Self) -> String
+pub fn CastlingRights::with_kingside(Self, Color, Bool) -> Self
+pub fn CastlingRights::with_queenside(Self, Color, Bool) -> Self
+pub impl Show for CastlingRights
+
+pub(all) enum Color {
+  White
+  Black
+} derive(Eq, @debug.Debug)
+pub fn Color::equal(Self, Self) -> Bool
+pub fn Color::fen_char(Self) -> Char
+pub fn Color::from_fen_char(Char) -> Self?
+pub fn Color::index(Self) -> Int
+pub fn Color::name(Self) -> String
+pub fn Color::not_equal(Self, Self) -> Bool
+pub fn Color::opposite(Self) -> Self
+pub fn Color::output(Self, &Logger) -> Unit
+pub fn Color::to_repr(Self) -> @debug.Repr
+pub fn Color::to_string(Self) -> String
+pub impl Show for Color
+
+pub(all) struct Piece {
+  color : Color
+  kind : PieceKind
+} derive(Eq, @debug.Debug)
+pub fn Piece::color(Self) -> Color
+pub fn Piece::equal(Self, Self) -> Bool
+pub fn Piece::fen_char(Self) -> Char
+pub fn Piece::from_fen_char(Char) -> Self?
+pub fn Piece::kind(Self) -> PieceKind
+pub fn Piece::new(Color, PieceKind) -> Self
+pub fn Piece::not_equal(Self, Self) -> Bool
+pub fn Piece::output(Self, &Logger) -> Unit
+pub fn Piece::to_repr(Self) -> @debug.Repr
+pub fn Piece::to_string(Self) -> String
+pub impl Show for Piece
+
+pub(all) enum PieceKind {
+  Pawn
+  Knight
+  Bishop
+  Rook
+  Queen
+  King
+} derive(Eq, @debug.Debug)
+pub fn PieceKind::equal(Self, Self) -> Bool
+pub fn PieceKind::fen_char(Self) -> Char
+pub fn PieceKind::from_fen_char(Char) -> Self?
+pub fn PieceKind::from_index(Int) -> Self?
+pub fn PieceKind::index(Self) -> Int
+pub fn PieceKind::name(Self) -> String
+pub fn PieceKind::not_equal(Self, Self) -> Bool
+pub fn PieceKind::output(Self, &Logger) -> Unit
+pub fn PieceKind::to_repr(Self) -> @debug.Repr
+pub fn PieceKind::to_string(Self) -> String
+pub impl Show for PieceKind
+
+pub(all) struct Position {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn Position::castling(Self) -> CastlingRights
+pub fn Position::color_occupancy(Self, Color) -> Bitboard
+pub fn Position::empty() -> Self
+pub fn Position::en_passant(Self) -> Square?
+pub fn Position::equal(Self, Self) -> Bool
+pub fn Position::from_fen(String) -> Self raise FenError
+pub fn Position::fullmove_number(Self) -> Int
+pub fn Position::halfmove_clock(Self) -> Int
+pub fn Position::is_empty_square(Self, Square) -> Bool
+pub fn Position::king_square(Self, Color) -> Square?
+pub fn Position::new(FixedArray[UInt64], Color, CastlingRights, Square?, Int, Int) -> Self
+pub fn Position::not_equal(Self, Self) -> Bool
+pub fn Position::occupancy(Self) -> Bitboard
+pub fn Position::piece_at(Self, Square) -> Piece?
+pub fn Position::piece_count(Self) -> Int
+pub fn Position::pieces_of(Self, Color, PieceKind) -> Bitboard
+pub fn Position::startpos() -> Self
+pub fn Position::to_ascii(Self) -> String
+pub fn Position::to_fen(Self) -> String
+pub fn Position::to_repr(Self) -> @debug.Repr
+pub fn Position::to_unicode(Self) -> String
+pub fn Position::try_from_fen(String) -> Result[Self, FenError]
+pub fn Position::turn(Self) -> Color
+pub fn Position::zobrist_hash(Self) -> UInt64
+
+pub(all) struct Square(Int) derive(Eq, @debug.Debug)
+pub fn Square::all() -> Array[Self]
+pub fn Square::equal(Self, Self) -> Bool
+pub fn Square::file(Self) -> Int
+pub fn Square::file_char(Int) -> Char
+pub fn Square::from_file_rank(Char, Char) -> Self?
+pub fn Square::from_index(Int) -> Self?
+pub fn Square::index(Self) -> Int
+pub fn Square::is_light(Self) -> Bool
+pub fn Square::make(Int, Int) -> Self
+pub fn Square::not_equal(Self, Self) -> Bool
+pub fn Square::offset(Self, Int, Int) -> Self?
+pub fn Square::output(Self, &Logger) -> Unit
+pub fn Square::parse(String) -> Self?
+pub fn Square::rank(Self) -> Int
+pub fn Square::rank_char(Int) -> Char
+pub fn Square::to_repr(Self) -> @debug.Repr
+pub fn Square::to_string(Self) -> String
+pub impl Show for Square
+
+pub(all) struct Zobrist {
+  // private fields
+} derive(@debug.Debug)
+pub fn Zobrist::castling_key(Self, CastlingRights) -> UInt64
+pub fn Zobrist::en_passant_key(Self, Int) -> UInt64
+pub fn Zobrist::hash(Self, Position) -> UInt64
+pub fn Zobrist::new() -> Self
+pub fn Zobrist::piece_key(Self, Piece, Square) -> UInt64
+pub fn Zobrist::side_key(Self) -> UInt64
+pub fn Zobrist::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits
