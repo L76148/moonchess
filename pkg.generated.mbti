@@ -28,6 +28,8 @@ pub fn FenError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub(all) struct Bitboard(UInt64) derive(Eq, @debug.Debug)
+pub fn Bitboard::attacks_of(PieceKind, Color, Square, Self) -> Self
+pub fn Bitboard::bishop_attacks(Square, Self) -> Self
 pub fn Bitboard::contains(Self, Square) -> Bool
 pub fn Bitboard::count(Self) -> Int
 pub fn Bitboard::difference(Self, Self) -> Self
@@ -39,10 +41,15 @@ pub fn Bitboard::from_u64(UInt64) -> Self
 pub fn Bitboard::full() -> Self
 pub fn Bitboard::intersect(Self, Self) -> Self
 pub fn Bitboard::is_empty(Self) -> Bool
+pub fn Bitboard::king_attacks(Square) -> Self
+pub fn Bitboard::knight_attacks(Square) -> Self
 pub fn Bitboard::not_equal(Self, Self) -> Bool
 pub fn Bitboard::output(Self, &Logger) -> Unit
+pub fn Bitboard::pawn_attacks(Color, Square) -> Self
+pub fn Bitboard::queen_attacks(Square, Self) -> Self
 pub fn Bitboard::rank_mask(Int) -> Self
 pub fn Bitboard::remove(Self, Square) -> Self
+pub fn Bitboard::rook_attacks(Square, Self) -> Self
 pub fn Bitboard::set(Self, Square) -> Self
 pub fn Bitboard::single(Square) -> Self
 pub fn Bitboard::squares(Self) -> Array[Square]
@@ -91,6 +98,45 @@ pub fn Color::to_repr(Self) -> @debug.Repr
 pub fn Color::to_string(Self) -> String
 pub impl Show for Color
 
+pub(all) struct Move {
+  from : Square
+  to : Square
+  kind : MoveKind
+  promotion : PieceKind?
+} derive(Eq, @debug.Debug)
+pub fn Move::castle(Color, Bool) -> Self
+pub fn Move::double_push(Square, Square) -> Self
+pub fn Move::en_passant(Square, Square) -> Self
+pub fn Move::equal(Self, Self) -> Bool
+pub fn Move::is_capture(Self, Position) -> Bool
+pub fn Move::is_castling(Self) -> Bool
+pub fn Move::is_promotion(Self) -> Bool
+pub fn Move::new(Square, Square) -> Self
+pub fn Move::not_equal(Self, Self) -> Bool
+pub fn Move::output(Self, &Logger) -> Unit
+pub fn Move::promotion(Square, Square, PieceKind) -> Self
+pub fn Move::promotion_piece(Self) -> PieceKind?
+pub fn Move::to_repr(Self) -> @debug.Repr
+pub fn Move::to_string(Self) -> String
+pub fn Move::to_uci(Self) -> String
+pub impl Show for Move
+
+pub(all) enum MoveKind {
+  Normal
+  DoublePawnPush
+  EnPassant
+  CastleKingside
+  CastleQueenside
+  Promotion
+} derive(Eq, @debug.Debug)
+pub fn MoveKind::equal(Self, Self) -> Bool
+pub fn MoveKind::name(Self) -> String
+pub fn MoveKind::not_equal(Self, Self) -> Bool
+pub fn MoveKind::output(Self, &Logger) -> Unit
+pub fn MoveKind::to_repr(Self) -> @debug.Repr
+pub fn MoveKind::to_string(Self) -> String
+pub impl Show for MoveKind
+
 pub(all) struct Piece {
   color : Color
   kind : PieceKind
@@ -130,7 +176,10 @@ pub impl Show for PieceKind
 pub(all) struct Position {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn Position::attackers_to(Self, Square, Color) -> Bitboard
+pub fn Position::attacks_from(Self, Square) -> Bitboard
 pub fn Position::castling(Self) -> CastlingRights
+pub fn Position::castling_is_pseudo_legal(Self, Color, Bool) -> Bool
 pub fn Position::color_occupancy(Self, Color) -> Bitboard
 pub fn Position::empty() -> Self
 pub fn Position::en_passant(Self) -> Square?
@@ -138,6 +187,8 @@ pub fn Position::equal(Self, Self) -> Bool
 pub fn Position::from_fen(String) -> Self raise FenError
 pub fn Position::fullmove_number(Self) -> Int
 pub fn Position::halfmove_clock(Self) -> Int
+pub fn Position::in_check(Self, Color) -> Bool
+pub fn Position::is_attacked(Self, Square, Color) -> Bool
 pub fn Position::is_empty_square(Self, Square) -> Bool
 pub fn Position::king_square(Self, Color) -> Square?
 pub fn Position::new(FixedArray[UInt64], Color, CastlingRights, Square?, Int, Int) -> Self
@@ -146,6 +197,8 @@ pub fn Position::occupancy(Self) -> Bitboard
 pub fn Position::piece_at(Self, Square) -> Piece?
 pub fn Position::piece_count(Self) -> Int
 pub fn Position::pieces_of(Self, Color, PieceKind) -> Bitboard
+pub fn Position::pseudo_legal_moves(Self) -> Array[Move]
+pub fn Position::pseudo_legal_moves_from(Self, Square) -> Array[Move]
 pub fn Position::startpos() -> Self
 pub fn Position::to_ascii(Self) -> String
 pub fn Position::to_fen(Self) -> String

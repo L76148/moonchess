@@ -77,6 +77,30 @@ rank_one.intersect(file_a).first()             // Square of a1
 Square index `0` is `a1` and index `63` is `h8`, so bit `i` of a bitboard
 always refers to `Square(i)`.
 
+## Generate moves
+
+```text
+let moves = position.pseudo_legal_moves()
+position.pseudo_legal_moves_from(square)
+position.in_check(position.turn())
+position.is_attacked(square, @moonchess.White)
+position.attackers_to(square, @moonchess.White)
+```
+
+`pseudo_legal_moves` ignores king safety, as the name says: a pinned piece
+still reports its moves, and castling only checks the right and the empty
+path. Legality filtering through `make` and `unmake`, and perft counters
+checked against published node counts, are the next increment.
+
+Attack sets are built from step offsets for knights, kings and pawns and from
+ray walks for rooks, bishops and queens. Each ray stops at the first occupied
+square and includes it, so the blocking piece is part of the set:
+
+```text
+@moonchess.Bitboard::knight_attacks(square)
+@moonchess.Bitboard::rook_attacks(square, occupancy)
+```
+
 ## Compute a repetition key
 
 ```text
@@ -94,17 +118,20 @@ moon run cmd/moonchess
 moon run cmd/moonchess -- board "<FEN>"
 moon run cmd/moonchess -- unicode "<FEN>"
 moon run cmd/moonchess -- fen "<FEN>"
+moon run cmd/moonchess -- moves "<FEN>"
 moon run cmd/moonchess -- validate "<FEN>"
 ```
 
 ## Current increment
 
-This release covers the first milestone: the square, colour, piece and
-castling-rights types; the 64-bit bitboard; the position with its twelve piece
-bitboards and FEN state; the strict FEN reader and canonical writer; ASCII and
-Unicode rendering; and deterministic Zobrist keys.
+This release covers two milestones: the square, colour, piece and
+castling-rights types, the 64-bit bitboard, the position with its twelve piece
+bitboards and FEN state, the strict FEN reader and canonical writer, ASCII and
+Unicode rendering and deterministic Zobrist keys; then step and slider attack
+generation, attack maps, check detection and pseudo-legal move generation with
+castling and en passant.
 
-Legal move generation with make and unmake and perft counters, game status and
+Legal move filtering with make and unmake and perft counters, game status and
 SAN, PGN and EPD, and UCI notation are the next increments. Search and
 evaluation, opening books, tablebases, GUIs, network play and non-standard
 variants are out of scope.
