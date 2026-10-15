@@ -77,7 +77,7 @@ Generate moves and ask about attacks:
 
 ```text
 let moves = position.pseudo_legal_moves()          // Array[Move]
-moves.length()                                     // 48 for the Kiwipete position
+moves.length()                                     // 20 in the start position
 position.pseudo_legal_moves_from(e2)               // moves from one square
 position.in_check(position.turn())                 // Bool
 position.is_attacked(d5, @moonchess.White)         // Bool
@@ -175,17 +175,17 @@ configured backend.
 
 ## Roadmap
 
-1. **Core model and FEN** — the types, the bitboards, the FEN reader and
+1. **Core model and FEN** 鈥?the types, the bitboards, the FEN reader and
    writer, board rendering and Zobrist keys.
-2. **Move generation** — attacks and pseudo-legal generation (done), then
+2. **Move generation** 鈥?attacks and pseudo-legal generation (done), then
    legality with `make`/`unmake` and incremental keys, then perft counters
    checked against published node counts.
-3. **Game status and SAN** — check, checkmate, stalemate, insufficient
+3. **Game status and SAN** 鈥?check, checkmate, stalemate, insufficient
    material, the fifty-move rule, threefold repetition, and SAN parsing and
    generation with disambiguation.
-4. **PGN and EPD** — a tag-pair and movetext reader, comment and variation
+4. **PGN and EPD** 鈥?a tag-pair and movetext reader, comment and variation
    handling, and an EPD reader and writer.
-5. **UCI and tooling** — UCI move notation, a richer command line with a
+5. **UCI and tooling** 鈥?UCI move notation, a richer command line with a
    `perft`, `pgn` and `move` command, an example corpus and reference
    documentation.
 

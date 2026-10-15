@@ -4,7 +4,7 @@
 
 - 项目名称：MoonChess：纯 MoonBit 国际象棋核心库
 - 参赛者：L76148　联系方式：2237501538@qq.com
-- GitHub 仓库：https://github.com/L76148/moonchess（17 个有效提交，每个提交对应一个完整功能或测试批次）
+- GitHub 仓库：https://github.com/L76148/moonchess（提交数已满足不少于 10 个有效提交的要求，见仓库提交历史）
 - Mooncakes 模块：`L76148/moonchess`　许可证：Apache-2.0
 - 项目方向：新生态项目建设，数据结构与文件格式基础库
 - 原创性：原创实现，非移植，未复制任何第三方源代码
