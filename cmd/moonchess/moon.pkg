@@ -1,0 +1,6 @@
+import {
+  "L76148/moonchess" @chess,
+  "moonbitlang/core/env",
+}
+
+pkgtype(kind: "executable")
