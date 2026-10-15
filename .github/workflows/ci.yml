@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install MoonBit
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+
+      - name: Toolchain versions
+        run: |
+          moon version --all
+          moon update
+
+      - name: Check (all backends, warnings are errors)
+        run: moon check --target all --deny-warn
+
+      - name: Formatting
+        run: moon fmt --check
+
+      - name: Test (wasm)
+        run: moon test --target wasm --deny-warn
+
+      - name: Test (wasm-gc)
+        run: moon test --target wasm-gc --deny-warn
+
+      - name: Interfaces are up to date
+        run: |
+          moon info
+          git diff --exit-code
+
+      - name: Run the command line tool
+        run: |
+          moon run cmd/moonchess
+          moon run cmd/moonchess -- fen "8/8/8/8/8/8/8/K6k w - -"
+          moon run cmd/moonchess -- validate "r3k2r/8/8/3pP3/8/8/8/R3K2R w Kq d6 0 12"
