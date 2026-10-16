@@ -50,3 +50,17 @@ fn count_kind(
   }
   total
 }
+
+///|
+/// Finds the generated move with one UCI text, or fails the test.
+fn move_by_uci(
+  position : @moonchess.Position,
+  text : String,
+) -> @moonchess.Move {
+  for candidate in position.pseudo_legal_moves() {
+    if candidate.to_uci() == text {
+      return candidate
+    }
+  }
+  abort("no such move: " + text)
+}

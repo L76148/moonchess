@@ -191,6 +191,7 @@ pub fn Position::in_check(Self, Color) -> Bool
 pub fn Position::is_attacked(Self, Square, Color) -> Bool
 pub fn Position::is_empty_square(Self, Square) -> Bool
 pub fn Position::king_square(Self, Color) -> Square?
+pub fn Position::make_move(Self, Move) -> Self
 pub fn Position::new(FixedArray[UInt64], Color, CastlingRights, Square?, Int, Int) -> Self
 pub fn Position::not_equal(Self, Self) -> Bool
 pub fn Position::occupancy(Self) -> Bitboard
