@@ -91,8 +91,8 @@ position.attackers_to(square, @moonchess.White)
 
 `pseudo_legal_moves` ignores king safety, as the name says: a pinned piece
 still reports its moves, and castling only checks the right and the empty
-path. Legality filtering through `make` and `unmake`, and perft counters
-checked against published node counts, are the next increment.
+path. Legal filtering is layered on top of `make_move`; perft counters checked
+against published node counts are the next increment.
 
 Attack sets are built from step offsets for knights, kings and pawns and from
 ray walks for rooks, bishops and queens. Each ray stops at the first occupied
@@ -134,8 +134,8 @@ generation, attack maps, check detection and pseudo-legal move generation with
 castling and en passant; then applying a move and filtering pseudo-legal moves
 down to legal ones.
 
-Legal move filtering with make and unmake and perft counters, game status and
-SAN, PGN and EPD, and UCI notation are the next increments. Search and
+Perft counters, game status and SAN, PGN and EPD, and UCI notation are the
+next increments. Search and
 evaluation, opening books, tablebases, GUIs, network play and non-standard
 variants are out of scope.
 

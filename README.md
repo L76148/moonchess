@@ -143,9 +143,10 @@ a second pass over the board.
 
 **Pseudo-legal by contract.** `pseudo_legal_moves` ignores king safety, so a
 pinned piece still reports its moves and castling only checks the right and
-the empty path. The name says so, and the CLI says so. Filtering through
-`make`/`unmake` and a legality test is the next increment, and perft node
-counts are the acceptance test for it.
+the empty path. The name says so, and the CLI says so. Legal filtering is layered on top
+of `make_move`: a move is legal when the mover's king is not attacked
+afterwards, plus the castling transit rules. Perft node counts are the
+acceptance test for that layer.
 
 **Strict FEN.** Four to six fields are accepted; the clock fields default to
 `0` and `1` when omitted, and repeated spaces are tolerated. Everything else

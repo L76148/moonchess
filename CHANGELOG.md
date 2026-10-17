@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- Documentation patch: the README and the package page now describe legal
+  filtering as layered on `make_move` instead of a planned `unmake`.
+- No API or behaviour changes.
+
 ## 0.1.0
 
 ### Core model and FEN
