@@ -81,6 +81,8 @@ always refers to `Square(i)`.
 
 ```text
 let moves = position.pseudo_legal_moves()
+let legal = position.legal_moves()
+position.is_legal(moves[0])
 position.pseudo_legal_moves_from(square)
 position.in_check(position.turn())
 position.is_attacked(square, @moonchess.White)
@@ -129,7 +131,8 @@ castling-rights types, the 64-bit bitboard, the position with its twelve piece
 bitboards and FEN state, the strict FEN reader and canonical writer, ASCII and
 Unicode rendering and deterministic Zobrist keys; then step and slider attack
 generation, attack maps, check detection and pseudo-legal move generation with
-castling and en passant.
+castling and en passant; then applying a move and filtering pseudo-legal moves
+down to legal ones.
 
 Legal move filtering with make and unmake and perft counters, game status and
 SAN, PGN and EPD, and UCI notation are the next increments. Search and

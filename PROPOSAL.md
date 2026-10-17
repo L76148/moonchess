@@ -27,7 +27,7 @@
 
 ## 交付范围与工程边界
 
-交付：坐标/棋子/易位权类型与代数坐标换算；64 位 `Bitboard`（行列掩码、集合运算、位计数、升序迭代、图示）；`Position` 十二个位棋盘加 FEN 状态；严格 FEN 读写（四到六字段、缺省计数、结构化错误、规范化回写）；ASCII/Unicode 渲染；可复现 Zobrist 键；跳子与滑子攻击生成、被攻击格与将军判定；伪合法着法生成（含升变、吃过路兵、易位）。后续里程碑：合法着法过滤与 `make`/`unmake` 增量键、perft 计数、棋局状态与 SAN、PGN/EPD、UCI 与更完整的 CLI。
+交付：坐标/棋子/易位权类型与代数坐标换算；64 位 `Bitboard`（行列掩码、集合运算、位计数、升序迭代、图示）；`Position` 十二个位棋盘加 FEN 状态；严格 FEN 读写（四到六字段、缺省计数、结构化错误、规范化回写）；ASCII/Unicode 渲染；可复现 Zobrist 键；跳子与滑子攻击生成、被攻击格与将军判定；伪合法着法生成（含升变、吃过路兵、易位）；执行着法并更新全部 FEN 状态；过滤出合法着法（含易位经过被攻击格、吃过路兵暴露王）。后续里程碑：perft 计数、棋局状态与 SAN、PGN/EPD、UCI 与更完整的 CLI。
 
 明确不做：搜索与评估引擎、开局库、残局库、图形界面、网络对局、Chess960 与其它变体、Shredder-FEN 扩展。
 
@@ -44,12 +44,12 @@
 - 滑子攻击集包含阻挡子（射线走到第一个占用格并含该格），走子生成只需减去己方棋子，不必二次扫描棋盘。
 - FEN 严格但容忍缺省：接受四到六字段和多余空格，其余一律结构化报错，并强制每方恰好一个王；回写固定六字段，规范文本逐字节往返。
 - Zobrist 键表由固定种子经 SplitMix64 导出，跨运行、跨后端一致；键刻意忽略半步计数与回合数，这正是重复局面检测需要的语义。
-- 先显式交付伪合法着法（`pseudo_legal_moves`，文档与 CLI 都写明不检查王的安全），再用 `make`/`unmake` 做合法性过滤，避免让使用者误以为拿到的是合法着法。
+- 先显式交付伪合法着法（`pseudo_legal_moves`，文档与 CLI 都写明不检查王的安全），再用 `make_move` 的结果检查王的安全，收敛为合法着法，避免让使用者误以为拿到的是合法着法。
 
 ## 验收证据
 
 - `moon check --target all --deny-warn` 与 `moon fmt --check` 通过；
-- `moon test --target wasm --deny-warn` 与 `--target wasm-gc` 各 55 个用例全部通过；
+- `moon test --target wasm --deny-warn` 与 `--target wasm-gc` 各 77 个用例全部通过；
 - 可运行示例：`moon run cmd/moonchess -- moves`，另有 `board`、`unicode`、`fen`、`validate` 四个子命令；
 - CI 覆盖检查、格式、双后端测试、接口漂移与 CLI 冒烟；
 - 计划以 `moon add L76148/moonchess` 发布到 mooncakes.io。

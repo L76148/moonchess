@@ -39,7 +39,9 @@ The project is developed one capability at a time.
 | Step (knight, king, pawn) and slider (rook, bishop, queen) attacks | done |
 | Attack maps, attacker lookups and check detection | done |
 | Pseudo-legal move generation, castling and en passant | done |
-| Legal move filtering, `make`/`unmake`, perft counters | next |
+| Applying a move and updating all FEN state | done |
+| Legal move filtering, including castling and en passant edge cases | done |
+| Perft node counters | next |
 | Game status and SAN | planned |
 | PGN and EPD | planned |
 | UCI move notation and a richer CLI | planned |
@@ -78,6 +80,8 @@ Generate moves and ask about attacks:
 ```text
 let moves = position.pseudo_legal_moves()          // Array[Move]
 moves.length()                                     // 20 in the start position
+position.legal_moves()                             // the legal subset
+position.is_legal(moves[0])                        // Bool
 position.pseudo_legal_moves_from(e2)               // moves from one square
 position.in_check(position.turn())                 // Bool
 position.is_attacked(d5, @moonchess.White)         // Bool
@@ -164,12 +168,12 @@ moon test --target wasm --deny-warn
 moon test --target wasm-gc --deny-warn
 ```
 
-The current increment is covered by 55 tests spanning square arithmetic, piece
+The current increment is covered by 77 tests spanning square arithmetic, piece
 and colour conversions, bitboard algebra and diagrams, FEN round trips, every
 FEN error path, board rendering, castling-rights algebra, Zobrist key
 separation, step and slider attack sets, blocker handling, attacker lookups,
-check detection, move notation and pseudo-legal generation for pawns,
-promotions, en passant and castling. The same suites pass on the `wasm` and
+check detection, move notation, applying a move, and pseudo-legal and legal
+generation for pawns, promotions, en passant, castling, pins and check. The same suites pass on the `wasm` and
 `wasm-gc` backends, and the sources are checked warning-free on every
 configured backend.
 
@@ -177,9 +181,7 @@ configured backend.
 
 1. **Core model and FEN** 鈥?the types, the bitboards, the FEN reader and
    writer, board rendering and Zobrist keys.
-2. **Move generation** 鈥?attacks and pseudo-legal generation (done), then
-   legality with `make`/`unmake` and incremental keys, then perft counters
-   checked against published node counts.
+2. **Move generation** — attacks, pseudo-legal generation, applying a move and legal filtering (done), then perft counters checked against published node counts.
 3. **Game status and SAN** 鈥?check, checkmate, stalemate, insufficient
    material, the fifty-move rule, threefold repetition, and SAN parsing and
    generation with disambiguation.
